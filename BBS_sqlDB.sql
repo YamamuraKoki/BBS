@@ -15,7 +15,7 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`users` (
   `name` VARCHAR(10) NOT NULL ,
   `branch_id` INT NOT NULL ,
   `position_id` INT NOT NULL ,
-  `user_lifeordeath` TINYINT(1) NOT NULL ,
+  `user_state` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) )
 ENGINE = InnoDB;
@@ -51,7 +51,7 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`articles` (
   `category` VARCHAR(10) NOT NULL ,
   `insert_date` DATE NOT NULL ,
   `update_date` DATE NOT NULL ,
-  `user_id` VARCHAR(10) NOT NULL ,
+  `user_id` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -64,8 +64,8 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`comments` (
   `text` VARCHAR(500) NOT NULL ,
   `insert_date` DATE NOT NULL ,
   `update_date` DATE NOT NULL ,
-  `user_id` VARCHAR(10) NOT NULL ,
-  `article_id` VARCHAR(255) NOT NULL ,
+  `user_id` INT NOT NULL ,
+  `article_id` INT NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
