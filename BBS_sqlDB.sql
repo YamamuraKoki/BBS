@@ -13,8 +13,9 @@ CREATE  TABLE IF NOT EXISTS `mydb`.`users` (
   `login_id` VARCHAR(20) NOT NULL ,
   `password` VARCHAR(255) NOT NULL ,
   `name` VARCHAR(10) NOT NULL ,
-  `branch` INT NOT NULL ,
-  `position` INT NOT NULL ,
+  `branch_id` INT NOT NULL ,
+  `position_id` INT NOT NULL ,
+  `user_lifeordeath` TINYINT(1) NOT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `login_id_UNIQUE` (`login_id` ASC) )
 ENGINE = InnoDB;
@@ -25,8 +26,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`branches` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `branch_number` INT NOT NULL ,
-  `branch_name` VARCHAR(255) NOT NULL ,
+  `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -36,8 +36,7 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`positions` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `position_number` INT NOT NULL ,
-  `position_name` VARCHAR(255) NOT NULL ,
+  `name` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -47,12 +46,12 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`articles` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `article_title` VARCHAR(50) NOT NULL ,
-  `article_text` VARCHAR(1000) NOT NULL ,
-  `article_category` VARCHAR(10) NOT NULL ,
+  `title` VARCHAR(50) NOT NULL ,
+  `text` VARCHAR(1000) NOT NULL ,
+  `category` VARCHAR(10) NOT NULL ,
   `insert_date` DATE NOT NULL ,
   `update_date` DATE NOT NULL ,
-  `article_user` VARCHAR(10) NOT NULL ,
+  `user_id` VARCHAR(10) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
@@ -62,10 +61,11 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE  TABLE IF NOT EXISTS `mydb`.`comments` (
   `id` INT NOT NULL AUTO_INCREMENT ,
-  `comment_text` VARCHAR(500) NOT NULL ,
+  `text` VARCHAR(500) NOT NULL ,
   `insert_date` DATE NOT NULL ,
   `update_date` DATE NOT NULL ,
-  `comment_user` VARCHAR(10) NOT NULL ,
+  `user_id` VARCHAR(10) NOT NULL ,
+  `article_id` VARCHAR(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB;
 
