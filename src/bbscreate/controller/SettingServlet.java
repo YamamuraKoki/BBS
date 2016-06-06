@@ -71,14 +71,6 @@ public class SettingServlet extends HttpServlet {
 
 		if (isValid(request, messages) == true) {
 
-//			try {
-//				new UserService().update(editUser);
-//			} catch (NoRowsUpdatedRuntimeException e) {
-//				session.removeAttribute("editUser");
-//				messages.add("他の人によってデータが更新されました。最新データを確認してください。");
-//				session.setAttribute("errorMessages", messages);
-//				response.sendRedirect("setting");
-//			}
 
 			session.setAttribute("editUser", editUser);
 			messages.add("編集は正常に行われました");

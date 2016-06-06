@@ -20,7 +20,7 @@ public class UserManagmentDao {
 			StringBuilder sql = new StringBuilder();
 			sql.append("SELECT users.id, users.login_id, users.name, branches.branch_name, positions.position_name, users.user_state "
 					+ "FROM users INNER JOIN positions ON users.position_id = positions.id "
-					+ "INNER JOIN branches ON users.branch_id = branches.id;");
+					+ "INNER JOIN branches ON users.branch_id = branches.id ORDER BY users.branch_id ASC, users.position_id ASC ");
 			ps = connection.prepareStatement(sql.toString());
 
 			ResultSet rs = ps.executeQuery();

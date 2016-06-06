@@ -138,10 +138,6 @@ public class CommentDao {
 
 			System.out.println(ps);
 
-			int count = ps.executeUpdate();
-			if (count == 0) {
-				throw new NoRowsUpdatedRuntimeException();
-			}
 		} catch (SQLException e) {
 			throw new SQLRuntimeException(e);
 		} finally {

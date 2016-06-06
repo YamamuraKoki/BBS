@@ -74,4 +74,48 @@ public class ArticleService {
 			close(connection);
 		}
 	}
+
+	public List<ArticleView> searchCategory(String category) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			ArticleDao articleDao = new ArticleDao();
+			List<ArticleView> ret = articleDao.categorySearch(connection, category);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<ArticleView> searchTime(String startTime, String finishTime) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			ArticleDao articleDao = new ArticleDao();
+			List<ArticleView> ret = articleDao.timeSearch(connection, startTime, finishTime);
+
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }

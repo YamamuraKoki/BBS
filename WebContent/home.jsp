@@ -40,7 +40,7 @@
 </head>
 <body>
 	<div class="main-contents">
-		<div class="errorMessages">
+		<div class="Messages">
 			<ul>
 				<c:forEach items="${Messages}" var="message">
 					<li><c:out value="${message}" />
@@ -70,31 +70,49 @@
 			<div class="messages">
 				<c:if test="${not empty loginUser}">
 					<h2>投稿の一覧</h2>
-					<c:forEach items="${messages}" var="message">
-						<div class="messageView">
+					<h3>検索</h3>
+					<form action="home" method="get">
+					カテゴリー(必ず選択してください) <select name="categories" id="category">
+						<c:forEach items="${categoryData}" var="category"
+							varStatus="status">
+							<option value="${category.category}">
+								<c:out value="${category.category}" />
+							</option>
+						</c:forEach>
+					</select>
+					<br />
+					日付 <input type="date" name="startDays" value=""/> ～
+					<input type="date" name="finishDays" value=""/>
+					<br />
+
+					<input type="submit" value="検索" /><a href="home"><input type="button" value="検索リセット" /></a>
+					</form>
+
+					<c:forEach items="${articles}" var="article">
+						<div class="articleView">
 							<br /> <span class="name">【投稿者】<c:out
-									value="${message.name}" /></span> <span class="date">【投稿日時】<c:out
-									value="${message.insertDate}" /></span>
+									value="${article.name}" /></span> <span class="date">【投稿日時】<c:out
+									value="${article.insertDate}" /></span>
 							<form action="deleteArticle" method="post"
 								onSubmit="return articleCheck()">
 								<input type="submit" value="投稿を削除する" /> <input type="hidden"
-									name="id" value="${message.id}" />
+									name="id" value="${article.id}" />
 							</form>
 							<br /> <br />
 
 							<div class="title">
 								【件名】
-								<c:out value="${message.title}" />
+								<c:out value="${article.title}" />
 							</div>
 							<br />
 							<div class="category">
 								【カテゴリー】
-								<c:out value="${message.category}" />
+								<c:out value="${article.category}" />
 							</div>
 							<br />
 							<div class="text">
 								【本文】
-								<c:out value="${message.text}" />
+								<c:out value="${article.text}" />
 							</div>
 							<br />
 						</div>
@@ -110,8 +128,8 @@
 											value="${comment.insertDate}" /></span>
 									<form action="deleteComment" method="post"
 										onSubmit="return commentCheck()">
-										<input type="hidden" name="id" value="${comment.id}" />
-										<input type="submit" value="コメントを削除する" />
+										<input type="hidden" name="id" value="${comment.id}" /> <input
+											type="submit" value="コメントを削除する" />
 									</form>
 									<br />
 									<br />

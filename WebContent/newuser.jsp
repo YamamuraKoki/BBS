@@ -35,7 +35,8 @@
 			<input name="checkPassword" type="password" id="checkPassword" /><br />
 
 			<label for="name">名前</label> <input name="name"
-				value="${editUser.name }" id="name" /><br /> <label for="branch">支店</label>
+				value="${editUser.name }" id="name" /><br /> 
+			<label for="branch">支店</label>
 			<select name="branch" id="branch">
 				<c:forEach items="${branchs}" var="branch" varStatus="status">
 					<option value="${status.count}">
