@@ -82,6 +82,27 @@ public class ArticleService {
 			connection = getConnection();
 			ArticleDao articleDao = new ArticleDao();
 			List<ArticleView> ret = articleDao.categorySearch(connection, category);
+			commit(connection);
+
+			return ret;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<ArticleView> searchCategoryDay(String startDay, String finishDay, String category) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			ArticleDao articleDao = new ArticleDao();
+			List<ArticleView> ret = articleDao.dayCategorySearch(connection, startDay, finishDay, category);
 
 			commit(connection);
 
@@ -97,13 +118,13 @@ public class ArticleService {
 		}
 	}
 
-	public List<ArticleView> searchTime(String startTime, String finishTime) {
+	public List<ArticleView> searchDay(String startDay, String finishDay) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 			ArticleDao articleDao = new ArticleDao();
-			List<ArticleView> ret = articleDao.timeSearch(connection, startTime, finishTime);
+			List<ArticleView> ret = articleDao.daySearch(connection, startDay, finishDay);
 
 			commit(connection);
 
@@ -112,6 +133,51 @@ public class ArticleService {
 			rollback(connection);
 			throw e;
 		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+
+	public List<ArticleView> getFinishDay() {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			ArticleDao finishDao = new ArticleDao();
+			List<ArticleView> ret = finishDao.getFinishDayData(connection);
+			commit(connection);
+
+			return ret;
+		} catch(RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch(Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public List<ArticleView> getStartDay() {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			ArticleDao finishDao = new ArticleDao();
+			List<ArticleView> ret = finishDao.getStartDayData(connection);
+			commit(connection);
+
+			return ret;
+		} catch(RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch(Error e) {
 			rollback(connection);
 			throw e;
 		} finally {

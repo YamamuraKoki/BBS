@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -27,41 +26,59 @@ public class HomeServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException,
 ServletException {
-		HttpSession session = request.getSession();
 
-		List<ArticleView> articles = new ArticleService().getMessage();
 		List<UserComment> comments = new CommentService().getComment();
 		List<String> messages = new ArrayList<String>();
 
-		List<Article> categoryData = new ArrayList<Article>();
-		ArticleDao articleDao = new ArticleDao();
-		categoryData = articleDao.getCategoryData();
-		session.setAttribute("categoryData", categoryData);
+		ArticleDao categoryDao = new ArticleDao();
+		List<Article> categoryData = categoryDao.getCategoryData();
+		request.setAttribute("categoryData", categoryData);
 
-		String category = (request.getParameter("categories"));
-		String startTime = (request.getParameter("startDays"));
-		String finishTime = (request.getParameter("finishDays"));
+		ArticleService startService = new ArticleService();
+		List<ArticleView> startSearch = startService.getStartDay();
+		request.setAttribute("startDay", startSearch.get(0).getInsertDate());
 
-		request.setAttribute("articles", articles);
+		ArticleService finishService = new ArticleService();
+		List<ArticleView> finishSearch = finishService.getFinishDay();
+		request.setAttribute("finishDay", finishSearch.get(0).getInsertDate());
 
-		if(StringUtils.isEmpty(finishTime) == true) {
-			messages.add("終了の日付が選択されていません");
+		String category = request.getParameter("categories");
+		String startDay = request.getParameter("startDay");
+		String finishDay = request.getParameter("finishDay");
+
+		ArticleService service = new ArticleService();
+		List<ArticleView> articles = service.searchCategoryDay(startDay, finishDay, category);
+
+		if(isValid(request, messages)) {
+			request.setAttribute("articles", articles);
+			request.setAttribute("comments", comments);
+
+		} else {
+			request.setAttribute("Messages", messages);
+			request.setAttribute("articles", articles);
+			request.setAttribute("comments", comments);
 		}
-
-		if(StringUtils.isEmpty(startTime) == false && StringUtils.isEmpty(finishTime) == false) {
-			List<ArticleView> searchTime = new ArticleService().searchTime(startTime, finishTime);
-			System.out.println(startTime + "," +finishTime);
-			request.setAttribute("articles", searchTime);
-		}
-
-		if(StringUtils.isEmpty(category) == false) {
-			List<ArticleView> searchCategory = new ArticleService().searchCategory(category);
-			request.setAttribute("articles", searchCategory);
-		}
-
-		request.setAttribute("comments", comments);
-
-
 		request.getRequestDispatcher("/home.jsp").forward(request, response);
+	}
+
+	private boolean isValid(HttpServletRequest request, List<String> messages) {
+
+		String startDay = request.getParameter("startDay");
+		String finishDay = request.getParameter("finishDay");
+
+		if(StringUtils.isEmpty(startDay) && !StringUtils.isEmpty(finishDay)) {
+			messages.add("開始日時を選択してください。");
+			messages.add("全件表示します。");
+		}
+
+		if(!StringUtils.isEmpty(startDay) && StringUtils.isEmpty(finishDay)) {
+			messages.add("終了日時を選択してください");
+			messages.add("全件表示します。");
+		}
+		if(messages.size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

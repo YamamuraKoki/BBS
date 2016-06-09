@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbscreate.beans.Article;
 import bbscreate.beans.ArticleView;
 import exception.NoRowsUpdatedRuntimeException;
@@ -114,7 +116,7 @@ public class ArticleDao {
 
 			ResultSet rs = ps.executeQuery();
 			List<ArticleView> ret = toShowUserArticle(rs);
-				return ret;
+			return ret;
 		} catch(SQLException e) {
 			throw new SQLRuntimeException(e);
 		} finally {
@@ -134,6 +136,8 @@ public class ArticleDao {
 				String category = rs.getString("category");
 				String text = rs.getString("text");
 				Date insertDate = rs.getDate("insert_date");
+				int branch = rs.getInt("branch");
+				int position = rs.getInt("position");
 
 				ArticleView message = new ArticleView();
 				message.setName(name);
@@ -143,6 +147,8 @@ public class ArticleDao {
 				message.setCategory(category);
 				message.setText(text);
 				message.setInsertDate(insertDate);
+				message.setBranch(branch);
+				message.setPosition(position);
 
 				ret.add(message);
 			}
@@ -192,7 +198,52 @@ public class ArticleDao {
 		}
 	}
 
-	public List<ArticleView> timeSearch(Connection connection, String startTime, String finishTime) {
+	public List<ArticleView> dayCategorySearch
+	(Connection connection, String startDay, String finishDay, String category) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT * FROM user_article");
+			sql.append(" WHERE 1 ");
+
+			if (!StringUtils.isEmpty(category)) {
+				sql.append("AND category = ? ");
+			}
+			if (!StringUtils.isEmpty(startDay)) {
+				sql.append("AND insert_date >= ? ");
+			}
+			if (!StringUtils.isEmpty(finishDay)) {
+				sql.append("AND insert_date <= ? ");
+			}
+			sql.append("ORDER BY insert_date DESC ");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			int i = 1;
+			if (!StringUtils.isEmpty(category)) {
+				ps.setString(i++, category);
+			}
+			if (!StringUtils.isEmpty(startDay)) {
+				ps.setString(i++, startDay + " " + "00:00:00");
+			}
+			if (!StringUtils.isEmpty(finishDay)) {
+				ps.setString(i++, finishDay  + " " + "23:59:59");
+			}
+
+			System.out.println(ps);
+			ResultSet rs = ps.executeQuery();
+			List<ArticleView> ret = toShowUserArticle(rs);
+			return ret;
+
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	public List<ArticleView> daySearch(Connection connection, String startDay, String finishDay) {
 
 		PreparedStatement ps = null;
 		try {
@@ -204,12 +255,12 @@ public class ArticleDao {
 			sql.append("? ");
 			sql.append("AND ");
 			sql.append("? ");
+			sql.append("ORDER BY insert_date DESC");
 
 			ps = connection.prepareStatement(sql.toString());
 
-			ps.setString(1, startTime);
-			ps.setString(2, finishTime);
-			System.out.println(ps);
+			ps.setString(1, startDay + " " + "00:00:00");
+			ps.setString(2, finishDay + " " + "23:59:59");
 
 			ResultSet rs = ps.executeQuery();
 			List<ArticleView> ret = toShowUserArticle(rs);
@@ -219,6 +270,87 @@ public class ArticleDao {
 			throw new SQLRuntimeException(e);
 		} finally {
 			close(ps);
+		}
+	}
+	public List<ArticleView> getFinishDayData(Connection connection) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT MAX(insert_date) FROM user_article ORDER BY insert_date DESC ");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<ArticleView> finishDayList = toFinishDayList(rs);
+			if (finishDayList.isEmpty()) {
+				return null;
+			} else {
+				return finishDayList;
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<ArticleView> toFinishDayList(ResultSet rs) throws SQLException {
+
+		List<ArticleView> ret = new ArrayList<ArticleView>();
+		try {
+			while (rs.next()) {
+				Date finishDay = rs.getDate("MAX(insert_date)");
+
+				ArticleView finishDays = new ArticleView();
+				finishDays.setInsertDate(finishDay);
+
+				ret.add(finishDays);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
+
+	public List<ArticleView> getStartDayData(Connection connection) {
+
+		PreparedStatement ps = null;
+		try {
+			StringBuilder sql = new StringBuilder();
+			sql.append("SELECT MIN(insert_date) FROM user_article ORDER BY insert_date ASC ");
+
+			ps = connection.prepareStatement(sql.toString());
+
+			ResultSet rs = ps.executeQuery();
+			List<ArticleView> startDayList = toStartDayList(rs);
+			if (startDayList.isEmpty()) {
+				return null;
+			} else {
+				return startDayList;
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<ArticleView> toStartDayList(ResultSet rs) throws SQLException {
+
+		List<ArticleView> ret = new ArrayList<ArticleView>();
+		try {
+			while (rs.next()) {
+				Date startDay = rs.getDate("MIN(insert_date)");
+
+				ArticleView finishDays = new ArticleView();
+				finishDays.setInsertDate(startDay);
+
+				ret.add(finishDays);
+			}
+			return ret;
+		} finally {
+			close(rs);
 		}
 	}
 }

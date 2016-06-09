@@ -27,7 +27,7 @@ public class CommentDao {
 			sql.append(", insert_date");
 			sql.append(", update_date");
 			sql.append(", user_id");
-			sql.append(", article_id");
+			sql.append(", article_id ");
 			sql.append(") VALUES (");
 			sql.append("?"); //text
 			sql.append(", CURRENT_TIMESTAMP"); //insert_date
@@ -56,7 +56,8 @@ public class CommentDao {
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT comments.id, users.name, comments.text, comments.insert_date, comments.article_id, comments.user_id"
+			sql.append("SELECT comments.id, users.name, comments.text, comments.insert_date,users.branch_id,"
+					+ " users.position_id, comments.article_id, comments.user_id"
 					+ " FROM users INNER JOIN comments ON users.id = comments.user_id");
 			ps = connection.prepareStatement(sql.toString());
 
@@ -81,6 +82,8 @@ public class CommentDao {
 				Timestamp insertDate = rs.getTimestamp("insert_date");
 				int userId = rs.getInt("user_id");
 				int articleId = rs.getInt("article_id");
+				int branch = rs.getInt("branch_id");
+				int position = rs.getInt("position_id");
 
 				UserComment comment = new UserComment();
 				comment.setId(id);
@@ -89,6 +92,8 @@ public class CommentDao {
 				comment.setInsertDate(insertDate);
 				comment.setUserId(userId);
 				comment.setArticleId(articleId);
+				comment.setBranch(branch);
+				comment.setPosition(position);
 
 				ret.add(comment);
 			}

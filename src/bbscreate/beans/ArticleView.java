@@ -13,6 +13,10 @@ public class ArticleView implements Serializable {
 	private String category;
 	private String text;
 	private Date insertDate;
+	private int branch;
+	private int position;
+	private Date startDate;
+	private Date finishDate;
 
 	public int getId() {
 		return id;
@@ -65,5 +69,37 @@ public class ArticleView implements Serializable {
 
 	public void setInsertDate(Date insertDate) {
 		this.insertDate = insertDate;
+	}
+
+	public int getBranch() {
+		return branch;
+	}
+
+	public void setBranch(int branch) {
+		this.branch = branch;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
+	}
+
+	public Date getStarttDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getFinishDate() {
+		return finishDate;
+	}
+
+	public void setFinishDate(Date finishDate) {
+		this.finishDate = finishDate;
 	}
 }

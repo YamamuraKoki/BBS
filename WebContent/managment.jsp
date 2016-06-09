@@ -82,16 +82,20 @@
 						</c:if>
 
 						<form action="managment" method="post" onSubmit="return check()">
-							<td><input type="submit" value="状態の変更" /></td> <input
+							<td><c:if test="${loginUser.loginId == list.loginId == false}" >
+							<input type="submit" value="状態の変更" /></td> <input
 								type="hidden" name="id" value="${list.id}" /> <input
 								type="hidden" name="userState" value="${list.userState}" />
+							</c:if>
 						</form>
 						<td><a href="setting?id=${list.id}"><input type="submit"
 								value="編集" /></a></td>
 
 						<form action="deleteUser" method="post" onSubmit="return change()">
-							<td><input type="submit" value="削除" /></td> <input type="hidden"
+						<td><c:if test="${loginUser.loginId == list.loginId == false}" >
+							<input type="submit" value="削除" /></td> <input type="hidden"
 								name="id" value="${list.id}" />
+							</c:if>
 						</form>
 					</tr>
 				</c:forEach>

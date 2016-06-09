@@ -39,11 +39,11 @@ ServletException {
 
 		User user = new User();
 		user.setId(Integer.valueOf(request.getParameter("id")));
-		if(Boolean.valueOf(request.getParameter("userState")) == false) {
+		if(!Boolean.valueOf(request.getParameter("userState"))) {
 		user.setUserState(true);
 		}
 
-		if(Boolean.valueOf(request.getParameter("userState")) == true) {
+		if(Boolean.valueOf(request.getParameter("userState"))) {
 			user.setUserState(false);
 		}
 

@@ -12,6 +12,8 @@ public class UserComment implements Serializable {
 	private Date insertDate;
 	private int userId;
 	private int articleId;
+	private int branch;
+	private int position;
 
 	public int getId() {
 		return id;
@@ -57,5 +59,21 @@ public class UserComment implements Serializable {
 
 	public void setArticleId(int articleId) {
 		this.articleId = articleId;
+	}
+
+	public int getBranch() {
+		return branch;
+	}
+
+	public void setBranch(int branch) {
+		this.branch = branch;
+	}
+
+	public int getPosition() {
+		return position;
+	}
+
+	public void setPosition(int position) {
+		this.position = position;
 	}
 }

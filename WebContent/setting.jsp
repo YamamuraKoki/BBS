@@ -28,7 +28,8 @@
 				value="${editUser.loginId}" id="loginId" />(半角英数字6文字以上20文字以下で入力してください)
 			<br /> <label for="password">パスワード</label> <input name="password"
 				type="password" id="password" />(半角文字6文字以上255文字以下で
-			入力してください。変更がない場合はそのまま登録してください。) <br /> <label for="checkPassword">パスワード（再確認）</label>
+			入力してください。変更がない場合はそのまま登録してください。) <br /> <label for="checkPassword">
+			パスワード（再確認）</label>
 			<input name="checkPassword" type="password" id="checkPassword" /><br />
 
 			<label for="name">名前</label> <input name="name"

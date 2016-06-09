@@ -38,7 +38,7 @@ ServletException {
 
 		Article articleData = getArticleData(request);
 
-		if(isValid(request, messages) == true) {
+		if(isValid(request, messages)) {
 
 			Article message = new Article();
 			User user = (User) session.getAttribute("loginUser");
@@ -64,13 +64,13 @@ ServletException {
 		String category = request.getParameter("category");
 		String text = request.getParameter("text");
 
-		if(StringUtils.isEmpty(title) == true) {
+		if(StringUtils.isEmpty(title)) {
 			messages.add("件名を入力してください");
 		}
 		if(title.length() > 50) {
 			messages.add("件名は50文字以内で入力してください");
 		}
-		if(StringUtils.isEmpty(category) == true) {
+		if(StringUtils.isEmpty(category)) {
 			messages.add("カテゴリー名を入力してください");
 		}
 		if(category.length() > 10) {

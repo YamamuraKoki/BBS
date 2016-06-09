@@ -30,7 +30,7 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 
 			Comment articleCommentData = getArticleCommentData(request);
 
-			if(isValid(request, messages) == true) {
+			if(isValid(request, messages)) {
 
 				Comment commnets = new Comment();
 				User user = (User) session.getAttribute("loginUser");

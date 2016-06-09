@@ -49,18 +49,9 @@ ServletException {
 		List<String> messages = new ArrayList<String>();
 		HttpSession session = request.getSession();
 
-		List<User> branchs = new ArrayList<User>();
-		BranchDao bbsBranchDao = new BranchDao();
-		branchs = bbsBranchDao.getBranchUser();
-		session.setAttribute("branchs", branchs);
-
-		List<User> positioned = new ArrayList<User>();
-		PositionDao bbsPositionDao = new PositionDao();
-		positioned = bbsPositionDao.getPositionUser();
-		session.setAttribute("positioned", positioned);
 		User editUser = getEditUser(request);
 
-		if(isValid(request, messages) == true) {
+		if(isValid(request, messages)) {
 
 			new UserService().register(editUser);
 			session.removeAttribute("editUser");
@@ -78,7 +69,6 @@ ServletException {
 			throws IOException, ServletException {
 
 		User editUser = new User();
-
 		editUser.setLoginId(request.getParameter("loginId"));
 		editUser.setPassword(request.getParameter("password"));
 		editUser.setName(request.getParameter("name"));
@@ -90,6 +80,8 @@ ServletException {
 
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 		String loginId = request.getParameter("loginId");
+		UserService userCheck = new UserService();
+		User user = userCheck.checkUser(loginId);
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String checkPassword = request.getParameter("checkPassword");
@@ -107,6 +99,9 @@ ServletException {
 		}
 		if(!loginId.matches("^[0-9a-zA-Z]+${6,20}")) {
 			messages.add("ログインIDは半角英数字のみで6文字以上20文字以下で入力してください");
+		}
+		if(user != null)  {
+			messages.add("このログインIDは既に使用されています");
 		}
 		if(!password.matches("^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]+${6,255}")) {
 			messages.add("パスワードは半角文字のみで6文字以上255文字以下で入力してください");

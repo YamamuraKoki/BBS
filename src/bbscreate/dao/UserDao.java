@@ -43,6 +43,49 @@ public class UserDao {
 		}
 	}
 
+	public User checkUser(Connection connection, String loginId) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE (login_id = ?)";
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, loginId);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userCheckList = toUserCheckList(rs);
+			if (userCheckList.isEmpty() == true) {
+				return null;
+			} else if (2 <= userCheckList.size()) {
+				throw new IllegalStateException("2 <= userList.size()");
+			} else {
+				return userCheckList.get(0);
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<User> toUserCheckList(ResultSet rs) throws SQLException {
+
+		List<User> ret = new ArrayList<User>();
+		try {
+			while (rs.next()) {
+				String loginId = rs.getString("login_id");
+
+				User user = new User();
+				user.setLoginId(loginId);
+
+				ret.add(user);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
+
 	private List<User> toUserList(ResultSet rs) throws SQLException {
 
 		List<User> ret = new ArrayList<User>();

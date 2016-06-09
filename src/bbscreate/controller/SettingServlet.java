@@ -40,7 +40,7 @@ public class SettingServlet extends HttpServlet {
 		positioned = bbsPositionDao.getPositionUser();
 		session.setAttribute("positioned", positioned);
 
-		if (session.getAttribute("editUser") == null) {
+		if(session.getAttribute("editUser") == null) {
 			User editUser = new UserService().getUser(Integer.valueOf(request.getParameter("id")));
 			request.setAttribute("editUser", editUser);
 		}
@@ -69,7 +69,7 @@ public class SettingServlet extends HttpServlet {
 		User editUser = getEditUser(request);
 		session.setAttribute("editUser", editUser);
 
-		if (isValid(request, messages) == true) {
+		if (isValid(request, messages)) {
 
 
 			session.setAttribute("editUser", editUser);
@@ -100,24 +100,29 @@ public class SettingServlet extends HttpServlet {
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 
 		String loginId = request.getParameter("loginId");
+		UserService userCheck = new UserService();
+		User user = userCheck.checkUser(loginId);
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String checkPassword = request.getParameter("checkPassword");
 		int branch = Integer.valueOf(request.getParameter("branch"));
 		int position = Integer.valueOf(request.getParameter("position"));
 
-		if(StringUtils.isEmpty(loginId) == true) {
+		if(StringUtils.isEmpty(loginId)) {
 			messages.add("ログインIDが入力されていません");
 		}
-		if(StringUtils.isEmpty(name) == true) {
+		if(StringUtils.isEmpty(name)) {
 			messages.add("名前が入力されていません");
+		}
+		if(loginId.matches(user.getLoginId())){
+			messages.add("このログインIDは既に使用されています");
 		}
 		if(!loginId.matches("^[0-9a-zA-Z]+${6,20}")) {
 			messages.add("ログインIDは半角英数字のみで6文字以上20文字以下で入力してください");
 		}
 
 		if(!StringUtils.isEmpty(password)) {
-			if(password.equals(checkPassword) == false) {
+			if(!password.equals(checkPassword)) {
 				messages.add("パスワードが一致しません");
 			}
 			if(!password.matches("^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]{6,255}$")) {
