@@ -38,11 +38,12 @@ public class LoginFilter implements Filter {
 			}
 			if(user != null && Boolean.valueOf(user.getUserState() == false)) {
 				HttpSession session = ((HttpServletRequest)request).getSession();
-				session.setAttribute("Messages", "使用不可能アカウントなのでログインできません");
+				session.setAttribute("Messages", "ロックがかかったためにログインできません。"
+						+ "管理者にお問い合わせください。");
 				((HttpServletResponse)response).sendRedirect("login");
 				return;
 			}
-			
+
 			chain.doFilter(request, response);
 	}
 

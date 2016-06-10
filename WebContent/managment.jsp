@@ -41,8 +41,11 @@
 </head>
 <body>
 	<div class="main-contents">
-		<c:if test="${ not empty Messages }">
-			<div class="errorMessages">
+
+		<div class="header">
+			<h2>ユーザー管理</h2>
+			<c:if test="${ not empty Messages }">
+			<div class="Messages">
 				<ul>
 					<c:forEach items="${Messages}" var="message">
 						<li><c:out value="${message}" />
@@ -51,21 +54,19 @@
 			</div>
 			<c:remove var="Messages" scope="session" />
 		</c:if>
-
-		<div class="header">
 			<a href="newuser">新規アカウント登録</a> <a href="home">ホーム画面に戻る</a>
 		</div>
 		<div class="userView">
-			<table border="1">
+			<br /><table border="5">
 				<tr>
 					<th>ログインID</th>
 					<th>名前</th>
 					<th>支店名</th>
 					<th>部署・役職名</th>
-					<th>ユーザー状態</th>
-					<th>ユーザー状態の変更</th>
-					<th>ユーザー編集</th>
-					<th>ユーザー削除</th>
+					<th>状態</th>
+					<th>状態の変更</th>
+					<th>編集</th>
+					<th>削除</th>
 
 				</tr>
 				<c:forEach items="${lists}" var="list">
@@ -78,8 +79,9 @@
 							<td>使用可能</td>
 						</c:if>
 						<c:if test="${list.userState == false}">
-							<td>使用不可能</td>
+							<td class="userLock">使用不可能</td>
 						</c:if>
+						</div>
 
 						<form action="managment" method="post" onSubmit="return check()">
 							<td><c:if test="${loginUser.loginId == list.loginId == false}" >
@@ -101,7 +103,7 @@
 				</c:forEach>
 			</table>
 		</div>
-
+		<br />
 		<div class="copyright">CopyrightⓒKoki Yamamura</div>
 	</div>
 </body>

@@ -126,14 +126,37 @@ public class UserService {
 		}
 	}
 
-	public User checkUser(String loginId) {
+	public User checkUser(String loginId, int id) {
 
 		Connection connection = null;
 		try {
 			connection = getConnection();
 
 			UserDao userDao = new UserDao();
-			User user = userDao.checkUser(connection, loginId);
+			User user = userDao.checkUser(connection, loginId, id);
+
+			commit(connection);
+
+			return user;
+		} catch (RuntimeException e) {
+			rollback(connection);
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
+	public User checkUserId(String loginId) {
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+
+			UserDao userDao = new UserDao();
+			User user = userDao.checkUserId(connection, loginId);
 
 			commit(connection);
 

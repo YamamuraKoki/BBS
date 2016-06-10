@@ -118,27 +118,6 @@ public class ArticleService {
 		}
 	}
 
-	public List<ArticleView> searchDay(String startDay, String finishDay) {
-
-		Connection connection = null;
-		try {
-			connection = getConnection();
-			ArticleDao articleDao = new ArticleDao();
-			List<ArticleView> ret = articleDao.daySearch(connection, startDay, finishDay);
-
-			commit(connection);
-
-			return ret;
-		} catch (RuntimeException e) {
-			rollback(connection);
-			throw e;
-		} catch (Error e) {
-			rollback(connection);
-			throw e;
-		} finally {
-			close(connection);
-		}
-	}
 
 
 	public List<ArticleView> getFinishDay() {

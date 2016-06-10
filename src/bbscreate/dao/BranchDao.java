@@ -26,7 +26,7 @@ public class BranchDao {
 
 			ResultSet rs = ps.executeQuery();
 			List<User> branchList = toBranchList(rs);
-			if (branchList.isEmpty() == true) {
+			if (branchList.isEmpty()) {
 				return null;
 			} else {
 				return branchList;

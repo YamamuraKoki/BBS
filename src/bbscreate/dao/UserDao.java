@@ -29,7 +29,7 @@ public class UserDao {
 
 			ResultSet rs = ps.executeQuery();
 			List<User> userList = toUserList(rs);
-			if (userList.isEmpty() == true) {
+			if (userList.isEmpty()) {
 				return null;
 			} else if (2 <= userList.size()) {
 				throw new IllegalStateException("2 <= userList.size()");
@@ -43,18 +43,19 @@ public class UserDao {
 		}
 	}
 
-	public User checkUser(Connection connection, String loginId) {
+	public User checkUser(Connection connection, String loginId, int id) {
 
 		PreparedStatement ps = null;
 		try {
-			String sql = "SELECT * FROM users WHERE (login_id = ?)";
+			String sql = "SELECT * FROM users WHERE login_id = ? AND id != ? ";
 
 			ps = connection.prepareStatement(sql);
 			ps.setString(1, loginId);
+			ps.setInt(2, id);
 
 			ResultSet rs = ps.executeQuery();
 			List<User> userCheckList = toUserCheckList(rs);
-			if (userCheckList.isEmpty() == true) {
+			if (userCheckList.isEmpty()) {
 				return null;
 			} else if (2 <= userCheckList.size()) {
 				throw new IllegalStateException("2 <= userList.size()");
@@ -69,6 +70,51 @@ public class UserDao {
 	}
 
 	private List<User> toUserCheckList(ResultSet rs) throws SQLException {
+
+		List<User> ret = new ArrayList<User>();
+		try {
+			while (rs.next()) {
+				String loginId = rs.getString("login_id");
+				int id = rs.getInt("id");
+
+				User user = new User();
+				user.setLoginId(loginId);
+				user.setId(id);
+
+				ret.add(user);
+			}
+			return ret;
+		} finally {
+			close(rs);
+		}
+	}
+
+	public User checkUserId(Connection connection, String loginId) {
+
+		PreparedStatement ps = null;
+		try {
+			String sql = "SELECT * FROM users WHERE login_id = ? ";
+
+			ps = connection.prepareStatement(sql);
+			ps.setString(1, loginId);
+
+			ResultSet rs = ps.executeQuery();
+			List<User> userCheckList = toUserIdCheckList(rs);
+			if (userCheckList.isEmpty() == true) {
+				return null;
+			} else if (2 <= userCheckList.size()) {
+				throw new IllegalStateException("2 <= userList.size()");
+			} else {
+				return userCheckList.get(0);
+			}
+		} catch (SQLException e) {
+			throw new SQLRuntimeException(e);
+		} finally {
+			close(ps);
+		}
+	}
+
+	private List<User> toUserIdCheckList(ResultSet rs) throws SQLException {
 
 		List<User> ret = new ArrayList<User>();
 		try {

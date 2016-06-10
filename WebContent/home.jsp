@@ -44,6 +44,14 @@
 			</ul>
 		</div>
 		<c:remove var="Messages" scope="session" />
+		<div class="trueMessages">
+			<ul>
+				<c:forEach items="${trueMessages}" var="trueMessage">
+					<li><c:out value="${trueMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+		<c:remove var="trueMessages" scope="session" />
 
 		<div class="header">
 			<c:if test="${ empty loginUser }">
@@ -52,7 +60,7 @@
 			<c:if test="${not empty loginUser}">
 				<h2>
 					<c:out value="${loginUser.name}"></c:out>
-					としてログイン中
+					さん、こんにちは。
 				</h2>
 				<a href="article">新規投稿画面へ</a>
 				<c:if test="${loginUser.position == 2 }">
@@ -66,30 +74,35 @@
 			<div class="messages">
 				<c:if test="${not empty loginUser}">
 					<h2>投稿の一覧</h2>
-					<h3>検索</h3>
+					<div class="search">
+					<h3 align="center">投稿記事検索</h3>
 					<form action="home" method="get">
 						<label>カテゴリー <select name="categories" id="category"></label>
 						<option value=""  />全件表示
 							<c:forEach items="${categoryData}" var="category"
 								varStatus="status">
-								<option value="${category.category}">
+								<option value="${category.category}"
+									<c:if test="${resultCategory.equals(category.category)}">selected</c:if>>
 									<c:out value="${category.category}" />
 								</option>
 							</c:forEach>
 						</select> <br /><br />
-						<label>日付(両方選択してください。両日入力がなければカテゴリーのみで検索できます。)
-						</label><input type="date" name="startDay"
-						value="${startDay }" />
-						～ <input type="date" name="finishDay" value="${finishDay }" /><br />
+						日付(両方選択してください。両日入力がなければカテゴリーのみで検索できます。)<br />
+						<input type="date" name="startDay"  value="${startDay }"  />
+						から <input type="date" name="finishDay" value="${finishDay }" />まで<br />
 
 							<input type="submit" value="検索" /><a href="home"><input type="button"
 							value="検索リセット" /></a>
 					</form>
-
+					</div>
+<br />
 					<c:forEach items="${articles}" var="article">
 						<div class="articleView">
-							<br /><br /> <span class="name">【投稿者】<c:out
-									value="${article.name}" /></span> <span class="date">【投稿日時】<c:out
+							<br /> <span class="name">【投稿者】<c:out
+									value="${article.name}" /></span>
+									【件名】<c:out value="${article.title}" />
+									【カテゴリー】<c:out value="${article.category}" />
+									 <span class="date">【投稿日時】<c:out
 									value="${article.insertDate}" /></span>
 							<form action="deleteArticle" method="post"
 								onSubmit="return articleCheck()">
@@ -97,7 +110,7 @@
 									<input type="submit" value="投稿を削除する" />
 									<input type="hidden" name="id" value="${article.id}" />
 								</c:if>
-								<c:if test="${loginUser.id == article.userId }">
+								<c:if test="${loginUser.id == article.userId && loginUser.position != 1}">
 									<input type="submit" value="投稿を削除する" />
 									<input type="hidden" name="id" value="${article.id}" />
 								</c:if>
@@ -120,29 +133,17 @@
 									<input type="hidden" name="id" value="${article.id}" />
 								</c:if>
 							</form>
-							<br /> <br />
+							<br />
 
-							<div class="title">
-								【件名】
-								<c:out value="${article.title}" />
-							</div>
-							<br />
-							<div class="category">
-								【カテゴリー】
-								<c:out value="${article.category}" />
-							</div>
-							<br />
 							<div class="text">
 								【本文】
-								<pre><c:out value="${article.text}" /></pre>
+								<pre class="articleText"><c:out value="${article.text}" /></pre>
 							</div>
 							<br />
-						</div>
-
+						<br />
+						<div class="commentView">
 						<c:forEach items="${comments}" var="comment">
-							<div class="commentView">
 								<c:if test="${article.id == comment.articleId}">
-									<br />
 									<br />
 									<span class="name">【投稿者】<c:out
 											value="${comment.userName}" /></span>
@@ -154,53 +155,53 @@
 											<input type="hidden" name="id" value="${comment.id}" />
 											<input type="submit" value="コメントを削除する" />
 										</c:if>
-										<c:if test="${loginUser.id == comment.userId }">
+										<c:if test="${loginUser.id == comment.userId && loginUser.position != 1}">
 											<input type="hidden" name="id" value="${comment.id}" />
 											<input type="submit" value="コメントを削除する" />
 										</c:if>
-										<c:if
-											test="${loginUser.position == 3 && loginUser.branch ==2 &&
-								 comment.branch == 2 && comment.position == 4}">
-											<input type="hidden" name="id" value="${comment.id}" />
-											<input type="submit" value="コメントを削除する" />
+										<c:if test="${loginUser.position == 3 && loginUser.branch ==2 &&
+								 			comment.branch == 2 && comment.position == 4}">
+												<input type="hidden" name="id" value="${comment.id}" />
+												<input type="submit" value="コメントを削除する" />
 										</c:if>
-										<c:if
-											test="${loginUser.position == 3 && loginUser.branch ==3 &&
-								 comment.branch == 3 && comment.position == 4}">
-											<input type="hidden" name="id" value="${comment.id}" />
-											<input type="submit" value="コメントを削除する" />
+										<c:if test="${loginUser.position == 3 && loginUser.branch ==3 &&
+								 			comment.branch == 3 && comment.position == 4}">
+												<input type="hidden" name="id" value="${comment.id}" />
+												<input type="submit" value="コメントを削除する" />
 										</c:if>
-										<c:if
-											test="${loginUser.position == 3 && loginUser.branch == 4 &&
-								 comment.branch == 4 && comment.position == 4}">
-											<input type="hidden" name="id" value="${comment.id}" />
-											<input type="submit" value="コメントを削除する" />
+										<c:if test="${loginUser.position == 3 && loginUser.branch == 4 &&
+								 			comment.branch == 4 && comment.position == 4}">
+												<input type="hidden" name="id" value="${comment.id}" />
+												<input type="submit" value="コメントを削除する" />
 										</c:if>
 									</form>
 									<br />
-									<br />
+
 									<div class="text">
 										【内容】
-										<pre><c:out value="${comment.text}" /></pre>
+										<pre class="commentText"><c:out value="${comment.text}" /></pre>
 									</div>
 									<br />
 								</c:if>
-							</div>
 						</c:forEach>
-						<div class="comment"></div>
+						</div>
+						<br />
+						<div class="comment">
 						<form action="comments" method="post">
 							<input type="hidden" name="articleId" value="${article.id }" />
-							<textarea name="text" cols="30" rows="3" class="comment-box">
-</textarea>
-							<input type="submit" value="コメントする">(500文字以内)<br />
+							<textarea name="text" cols="30" rows="3" class="comment-box"></textarea><br />
+							<input type="submit" value="コメントする">(500文字以内)<br /><br />
 						</form>
+						</div>
+						</div>
+						<br />
 					</c:forEach>
+					<br />
+					<c:if test="${empty articles }">該当の投稿がありませんでした</c:if>
 				</c:if>
 			</div>
-		</div>
-		<div></div>
-		<br /> <br />
 		<div class="copyright">CopyrightⓒKoki Yamamura</div>
+	</div>
 	</div>
 </body>
 </html>

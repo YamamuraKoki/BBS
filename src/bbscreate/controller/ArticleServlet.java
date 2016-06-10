@@ -49,7 +49,7 @@ ServletException {
 
 			new ArticleService().register(message);
 			messages.add("投稿は正常に行われました");
-			session.setAttribute("Messages", messages);
+			session.setAttribute("trueMessages", messages);
 			response.sendRedirect("home");
 		} else {
 			session.setAttribute("articleData", articleData);

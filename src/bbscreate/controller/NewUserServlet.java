@@ -81,7 +81,7 @@ ServletException {
 	private boolean isValid(HttpServletRequest request, List<String> messages) {
 		String loginId = request.getParameter("loginId");
 		UserService userCheck = new UserService();
-		User user = userCheck.checkUser(loginId);
+		User user = userCheck.checkUserId(loginId);
 		String password = request.getParameter("password");
 		String name = request.getParameter("name");
 		String checkPassword = request.getParameter("checkPassword");
@@ -97,13 +97,13 @@ ServletException {
 		if(StringUtils.isEmpty(name) == true) {
 			messages.add("名前が入力されていません");
 		}
-		if(!loginId.matches("^[0-9a-zA-Z]+${6,20}")) {
+		if(!loginId.matches("^[0-9a-zA-Z]{6,20}$")) {
 			messages.add("ログインIDは半角英数字のみで6文字以上20文字以下で入力してください");
 		}
 		if(user != null)  {
 			messages.add("このログインIDは既に使用されています");
 		}
-		if(!password.matches("^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]+${6,255}")) {
+		if(!password.matches("^[a-zA-Z0-9 -/:-@\\[-\\`\\{-\\~]{6,255}$")) {
 			messages.add("パスワードは半角文字のみで6文字以上255文字以下で入力してください");
 		}
 		if(name.length() > 10) {

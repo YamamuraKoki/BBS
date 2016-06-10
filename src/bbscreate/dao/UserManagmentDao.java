@@ -45,15 +45,15 @@ public class UserManagmentDao {
 				String positionName = rs.getString("position_name");
 				boolean userState = rs.getBoolean("user_state");
 
-				UserManagment comment = new UserManagment();
-				comment.setId(id);
-				comment.setLoginId(loginId);
-				comment.setName(name);
-				comment.setBranchName(branchName);
-				comment.setPositionName(positionName);
-				comment.setUserState(userState);
+				UserManagment userData = new UserManagment();
+				userData.setId(id);
+				userData.setLoginId(loginId);
+				userData.setName(name);
+				userData.setBranchName(branchName);
+				userData.setPositionName(positionName);
+				userData.setUserState(userState);
 
-				ret.add(comment);
+				ret.add(userData);
 			}
 			return ret;
 		} finally {

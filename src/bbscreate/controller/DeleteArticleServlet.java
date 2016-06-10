@@ -31,7 +31,7 @@ ServletException {
 		new CommentService().ArticleCommentDelete(message.getId());
 
 		messages.add("削除は正常に行われました");
-		session.setAttribute("Messages", messages);
+		session.setAttribute("trueMessages", messages);
 
 		response.sendRedirect("home");
 	}

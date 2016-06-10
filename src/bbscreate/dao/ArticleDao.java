@@ -135,7 +135,7 @@ public class ArticleDao {
 				String title = rs.getString("title");
 				String category = rs.getString("category");
 				String text = rs.getString("text");
-				Date insertDate = rs.getDate("insert_date");
+				Date insertDate = rs.getTimestamp("insert_date");
 				int branch = rs.getInt("branch");
 				int position = rs.getInt("position");
 
@@ -161,7 +161,7 @@ public class ArticleDao {
 
 		PreparedStatement ps = null;
 		try {
-			String sql = "select category from bbs.articles group by category;";
+			String sql = "select category from bbs.user_article group by category;";
 
 			Connection connection = getConnection();
 			ps = connection.prepareStatement(sql);
@@ -231,7 +231,6 @@ public class ArticleDao {
 				ps.setString(i++, finishDay  + " " + "23:59:59");
 			}
 
-			System.out.println(ps);
 			ResultSet rs = ps.executeQuery();
 			List<ArticleView> ret = toShowUserArticle(rs);
 			return ret;
@@ -243,41 +242,12 @@ public class ArticleDao {
 		}
 	}
 
-	public List<ArticleView> daySearch(Connection connection, String startDay, String finishDay) {
-
-		PreparedStatement ps = null;
-		try {
-			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT * FROM user_article");
-			sql.append(" WHERE");
-			sql.append(" insert_date");
-			sql.append(" between ");
-			sql.append("? ");
-			sql.append("AND ");
-			sql.append("? ");
-			sql.append("ORDER BY insert_date DESC");
-
-			ps = connection.prepareStatement(sql.toString());
-
-			ps.setString(1, startDay + " " + "00:00:00");
-			ps.setString(2, finishDay + " " + "23:59:59");
-
-			ResultSet rs = ps.executeQuery();
-			List<ArticleView> ret = toShowUserArticle(rs);
-			return ret;
-
-		} catch (SQLException e) {
-			throw new SQLRuntimeException(e);
-		} finally {
-			close(ps);
-		}
-	}
 	public List<ArticleView> getFinishDayData(Connection connection) {
 
 		PreparedStatement ps = null;
 		try {
 			StringBuilder sql = new StringBuilder();
-			sql.append("SELECT MAX(insert_date) FROM user_article ORDER BY insert_date DESC ");
+			sql.append("SELECT MAX(insert_date) FROM user_article ");
 
 			ps = connection.prepareStatement(sql.toString());
 
@@ -301,7 +271,6 @@ public class ArticleDao {
 		try {
 			while (rs.next()) {
 				Date finishDay = rs.getDate("MAX(insert_date)");
-
 				ArticleView finishDays = new ArticleView();
 				finishDays.setInsertDate(finishDay);
 

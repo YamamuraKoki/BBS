@@ -29,7 +29,7 @@ public class DeleteCommentServlet extends HttpServlet {
 		new CommentService().CommentDelete(comments);
 
 		messages.add("削除は正常に行われました");
-		session.setAttribute("Messages", messages);
+		session.setAttribute("trueMessages", messages);
 
 		response.sendRedirect("home");
 	}

@@ -32,15 +32,12 @@ ServletException {
 
 		ArticleDao categoryDao = new ArticleDao();
 		List<Article> categoryData = categoryDao.getCategoryData();
-		request.setAttribute("categoryData", categoryData);
 
 		ArticleService startService = new ArticleService();
 		List<ArticleView> startSearch = startService.getStartDay();
-		request.setAttribute("startDay", startSearch.get(0).getInsertDate());
 
 		ArticleService finishService = new ArticleService();
 		List<ArticleView> finishSearch = finishService.getFinishDay();
-		request.setAttribute("finishDay", finishSearch.get(0).getInsertDate());
 
 		String category = request.getParameter("categories");
 		String startDay = request.getParameter("startDay");
@@ -51,29 +48,44 @@ ServletException {
 
 		if(isValid(request, messages)) {
 			request.setAttribute("articles", articles);
+			request.setAttribute("categoryData", categoryData);
 			request.setAttribute("comments", comments);
 
 		} else {
 			request.setAttribute("Messages", messages);
 			request.setAttribute("articles", articles);
+			request.setAttribute("categoryData", categoryData);
 			request.setAttribute("comments", comments);
+		}
+		request.setAttribute("resultCategory", category);
+
+		if(StringUtils.isEmpty(startDay)) {
+			request.setAttribute("startDay", startSearch.get(0).getInsertDate());
+		} else {
+			request.setAttribute("startDay", startDay);
+		}
+		if(StringUtils.isEmpty(finishDay)) {
+			request.setAttribute("finishDay", finishSearch.get(0).getInsertDate());
+		} else {
+			request.setAttribute("finishDay", finishDay);
 		}
 		request.getRequestDispatcher("/home.jsp").forward(request, response);
 	}
 
-	private boolean isValid(HttpServletRequest request, List<String> messages) {
+	private boolean isValid(HttpServletRequest request, List<String> messages)
+			throws IOException {
 
 		String startDay = request.getParameter("startDay");
 		String finishDay = request.getParameter("finishDay");
 
 		if(StringUtils.isEmpty(startDay) && !StringUtils.isEmpty(finishDay)) {
 			messages.add("開始日時を選択してください。");
-			messages.add("全件表示します。");
+			messages.add("指定カテゴリーで検索結果を表示します");
 		}
 
 		if(!StringUtils.isEmpty(startDay) && StringUtils.isEmpty(finishDay)) {
 			messages.add("終了日時を選択してください");
-			messages.add("全件表示します。");
+			messages.add("指定カテゴリーで検索結果を表示します");
 		}
 		if(messages.size() == 0) {
 			return true;

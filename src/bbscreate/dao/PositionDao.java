@@ -26,7 +26,7 @@ public class PositionDao {
 
 			ResultSet rs = ps.executeQuery();
 			List<User> positionList = toPositionList(rs);
-			if (positionList.isEmpty() == true) {
+			if (positionList.isEmpty()) {
 				return null;
 			} else {
 				return positionList;

@@ -10,10 +10,10 @@
 <title>ログイン画面</title>
 </head>
 <body>
-	<div class="main-contents">
+	<div class="loginMain-contents">
 
 		<c:if test="${ not empty Messages }">
-			<div class="errorMessages">
+			<div class="Messages">
 				<ul>
 					<c:forEach items="${Messages}" var="message">
 						<li><c:out value="${message}" />
@@ -22,12 +22,12 @@
 			</div>
 			<c:remove var="Messages" scope="session" />
 		</c:if>
-
 		<form action="login" method="post">
-			<br /> <label for="loginId">ログインID</label> <input name="loginId"
-				value="" id="loginId" /><br /> <label for="password">パスワード</label>
-			<input name="password" type="password" id="password" /><br /> <input
-				type="submit" value="ログイン" /><br />
+			<br /> <label for="loginId">ログインID</label><br />
+				<input name="loginId" value="${loginId }" id="loginId" /><br />
+			<label for="password">パスワード</label><br />
+				<input name="password" type="password" id="password" /><br /><br />
+				<input type="submit" value="ログイン" /><br />
 		</form>
 		<div class="copyright">CopyrightⓒKoki Yamamura</div>
 	</div>
