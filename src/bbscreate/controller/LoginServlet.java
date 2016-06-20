@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
+
 import bbscreate.beans.User;
 import bbscreate.service.LoginService;
 
@@ -40,17 +42,38 @@ ServletException {
 		HttpSession session = request.getSession();
 		List<String> messages = new ArrayList<String>();
 
-
-		if(user != null) {
-
+		if(isValid (request, messages)) {
 			session.setAttribute("loginUser", user);
 			response.sendRedirect("home");
 		} else {
-
-			messages.add("ログインできませんでした。再度入力してください。");
 			session.setAttribute("loginId",loginId);
-			session.setAttribute("Messages", messages);
+			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("login");
 		}
+	}
+
+	private boolean isValid(HttpServletRequest request, List<String> messages) {
+		String loginId = request.getParameter("loginId");
+		String password = request.getParameter("password");
+		LoginService loginService = new LoginService();
+		User user = loginService.login(loginId, password);
+
+		if(StringUtils.isEmpty(loginId)) {
+			messages.add("ログインIDが入力されていません");
+		}
+
+		if(StringUtils.isEmpty(password)) {
+			messages.add("パスワードが入力されていません");
+		}
+
+		if(user == null) {
+			messages.add("ログインできませんでした");
+		}
+		if(messages.size() == 0){
+			return true;
+		} else {
+			return false;
+		}
+
 	}
 }

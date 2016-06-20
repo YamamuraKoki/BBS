@@ -11,23 +11,23 @@
 </head>
 <body>
 	<div class="loginMain-contents">
-
-		<c:if test="${ not empty Messages }">
-			<div class="Messages">
-				<ul>
-					<c:forEach items="${Messages}" var="message">
-						<li><c:out value="${message}" />
-					</c:forEach>
-				</ul>
-			</div>
-			<c:remove var="Messages" scope="session" />
+		<h1 align="center">BSG掲示板システム</h1>
+			<c:if test="${ not empty errorMessages }">
+				<div class="errorMessages">
+					<ul>
+						<c:forEach items="${errorMessages}" var="errorMessage">
+							<li><c:out value="${errorMessage}" />
+						</c:forEach>
+					</ul>
+				</div>
+			<c:remove var="errorMessages" scope="session" />
 		</c:if>
-		<form action="login" method="post">
+		<form action="login" method="post" align="center">
 			<br /> <label for="loginId">ログインID</label><br />
 				<input name="loginId" value="${loginId }" id="loginId" /><br />
 			<label for="password">パスワード</label><br />
 				<input name="password" type="password" id="password" /><br /><br />
-				<input type="submit" value="ログイン" /><br />
+				<input type="submit" value="ログイン" /><br /><br />
 		</form>
 		<div class="copyright">CopyrightⓒKoki Yamamura</div>
 	</div>

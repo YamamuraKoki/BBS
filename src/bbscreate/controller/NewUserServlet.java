@@ -56,11 +56,11 @@ ServletException {
 			new UserService().register(editUser);
 			session.removeAttribute("editUser");
 			messages.add("新規登録は正常に行われました");
-			session.setAttribute("Messages", messages);
+			session.setAttribute("trueManagmentMessages", messages);
 			response.sendRedirect("managment");
 		} else {
 			session.setAttribute("editUser", editUser);
-			session.setAttribute("Messages", messages);
+			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("newuser");
 		}
 	}

@@ -49,11 +49,11 @@ ServletException {
 
 			new ArticleService().register(message);
 			messages.add("投稿は正常に行われました");
-			session.setAttribute("trueMessages", messages);
+			session.setAttribute("trueHomeMessages", messages);
 			response.sendRedirect("home");
 		} else {
 			session.setAttribute("articleData", articleData);
-			session.setAttribute("Messages", messages);
+			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("article");
 		}
 	}
@@ -80,7 +80,7 @@ ServletException {
 			messages.add("本文を入力してください");
 		}
 		if(1000 < text.length()) {
-			messages.add("本文は1000文字以内で書いてください");
+			messages.add("本文は1000文字以内で入力してください");
 		}
 		if(messages.size() == 0) {
 			return true;

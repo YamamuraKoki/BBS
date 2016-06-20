@@ -1,4 +1,4 @@
-.Messages {
+.errorHomeMessages {
 	margin-top: 10px;
 	margin-right: 10px;
 	margin-bottom: 10px;
@@ -6,11 +6,36 @@
 	color: red;
 }
 
+.errorMessages {
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	color: red;
+}
+
+
+.trueHomeMessages {
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	color: black;
+}
+
+.trueManagmentMessages {
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	color: black;
+}
+
 .userLock {
 	color: red;
 }
 body {
-	background-color: #80ffff;
+	background-color: #FFFFDD;
 }
 
 .main-contents {
@@ -18,7 +43,7 @@ body {
 	margin-bottom: 0px;
 	margin-left: 0px;
 	margin-right: 00px;
-	background-color: #ffffff;
+	background-color: #FFFFDD;
 	height: 100%;
 }
 
@@ -43,21 +68,38 @@ body {
 	width: auto; height: auto;
 	background-color: #ffffff;
 	box-sizing: content-box;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+
 }
 
 .articleText{
-	font-size: x-large;
+	font-size: large;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: pre-line;
 }
 
+.line{
+	border-bottom: 2px dotted;
+}
 .commentView{
-	border: 2px dotted;
+	border-top: 2px dotted hidden;
+	border-bottom: 2px dotted;
 	width: auto; height: auto;
 	background-color: #ffffff;
 	box-sizing: content-box;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
 .commentText{
 	font-size: large;
+	word-wrap: break-word;
+	width: 200px
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	white-space: pre-line;
 }
 
 .copyright {
@@ -68,11 +110,10 @@ body {
 .main-contents {
 	margin-top: 0px;
 	margin-bottom: 0px;
-	margin-left: 20px;
-	margin-right: 20px;
-	background-color: white;
+	margin-left: 0px;
+	margin-right: 0px;
+	background-color: #FFFFDD;
 	height: 100%;
-	width: 800px;
 }
 
 .settingMain-contents {
@@ -80,7 +121,7 @@ body {
 	margin-bottom: 0px;
 	margin-left: 20px;
 	margin-right: 20px;
-	background-color: white;
+	background-color: #FFFFDD;
 	height: 100%;
 	width: 870px;
 }
@@ -89,7 +130,7 @@ body {
 	margin-bottom: 0px;
 	margin-left: 20px;
 	margin-right: 20px;
-	background-color: white;
+	background-color: #FFFFDD;
 	height: 100%;
 	width: 650px;
 }
@@ -99,7 +140,48 @@ body {
 	margin-bottom: 0px;
 	margin-left: 20px;
 	margin-right: 20px;
-	background-color: white;
+	background-color: #FFFFDD;
 	height: 100%;
 	width: 650px;
+}
+
+.loginTh {
+	width:200px;
+	height:auto;
+	bgcolor:skyblue;
+}
+
+.nameTh {
+	width:150px;
+	height:auto;
+}
+
+.branchTh {
+	width:70px;
+	height:auto;
+}
+
+.positionTh {
+	width:100px;
+	height:auto;
+}
+
+.stateTh {
+	width:70px;
+	height:auto;
+}
+
+.stateChangeTh {
+	width:130px;
+	height:auto;
+}
+
+.changeButton {
+	width:130px;
+	height:auto
+}
+
+.deleteButton {
+	width:130px;
+	height:auto
 }

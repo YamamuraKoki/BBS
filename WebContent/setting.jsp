@@ -12,15 +12,15 @@
 <body>
 	<div class="settingMain-contents">
 
-		<c:if test="${ not empty Messages }">
-			<div class="Messages">
+		<c:if test="${ not empty errorMessages }">
+			<div class="errorMessages">
 				<ul>
-					<c:forEach items="${Messages}" var="message">
-						<li><c:out value="${message}" />
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
 					</c:forEach>
 				</ul>
 			</div>
-			<c:remove var="Messages" scope="session" />
+			<c:remove var="errorMessages" scope="session" />
 		</c:if>
 
 		<form action="setting" method="post"><br />
@@ -58,9 +58,9 @@
 					</c:forEach>
 				</select>
 			</c:if><br />
-			 <input type="hidden" name="id" value="${editUser.id}" /> <br /> <input
-				type="submit" value="登録" /><a href="managment"><input
-				type="button" value="管理画面に戻る" /></a>
+			 <input type="hidden" name="id" value="${editUser.id}" /><br />
+			 <input type="submit" value="編集" />
+			 <a href="managment"><input type="button" value="管理画面に戻る" /></a>
 		</form>
 		<div class="copyright">Copyright(c)Koki Yamamura</div>
 	</div>

@@ -29,7 +29,7 @@ ServletException {
 		new UserService().userDelete(user);
 
 		messages.add("削除は正常に行われました");
-		session.setAttribute("Messages", messages);
+		session.setAttribute("trueManagmentMessages", messages);
 
 		response.sendRedirect("managment");
 	}

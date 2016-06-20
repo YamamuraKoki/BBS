@@ -32,13 +32,13 @@ public class LoginFilter implements Filter {
 			}
 			if(user == null){
 				HttpSession session = ((HttpServletRequest)request).getSession();
-				session.setAttribute("Messages", "ログインして下さい");
+				session.setAttribute("errorMessages", "ログインして下さい");
 				((HttpServletResponse)response).sendRedirect("login");
 				return;
 			}
 			if(user != null && Boolean.valueOf(user.getUserState() == false)) {
 				HttpSession session = ((HttpServletRequest)request).getSession();
-				session.setAttribute("Messages", "ロックがかかったためにログインできません。"
+				session.setAttribute("errorMessages", "ロックがかかったためにログインできません。"
 						+ "管理者にお問い合わせください。");
 				((HttpServletResponse)response).sendRedirect("login");
 				return;

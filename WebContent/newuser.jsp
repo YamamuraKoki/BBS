@@ -10,23 +10,22 @@
 <title>ユーザー新規登録</title>
 </head>
 <body>
-	<div class="newuserMain-contents">
-		<div class="header">
-			<a href="managment">ユーザー管理画面に戻る</a> <br />
-		</div>
+<div class="newuserMain-contents">
 
-		<c:if test="${ not empty Messages }">
+		<form action="newuser" method="post">
+			<h2>ユーザー新規登録画面</h2>
+
+			<c:if test="${ not empty errorMessages }">
 			<div class="errorMessages">
 				<ul>
-					<c:forEach items="${Messages}" var="message">
-						<li><c:out value="${message}" />
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
 					</c:forEach>
 				</ul>
 			</div>
-			<c:remove var="Messages" scope="session" />
+			<c:remove var="errorMessages" scope="session" />
 		</c:if>
-		<form action="newuser" method="post">
-			<h2>ユーザー新規登録画面</h2>
+
 			<label for="loginId">ログインID</label><br />
 				<input name="loginId" value="${editUser.loginId }" id="login_id" />
 					(6文字以上20文字以下の半角英数字で入力してください)<br />
@@ -55,7 +54,7 @@
 					</option>
 				</c:forEach>
 			</select><br /><br />
-			<input type="submit" value="登録" /> <br />
+			<input type="submit" value="登録" /><a href="managment"><input type="button" value="管理画面に戻る" /></a>
 		</form>
 		<div class="copyright">CopyrightⓒKoki Yamamura</div>
 	</div>

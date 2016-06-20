@@ -36,32 +36,35 @@
 </head>
 <body>
 	<div class="main-contents">
-		<div class="Messages">
-			<ul>
-				<c:forEach items="${Messages}" var="message">
-					<li><c:out value="${message}" />
-				</c:forEach>
-			</ul>
-		</div>
-		<c:remove var="Messages" scope="session" />
-		<div class="trueMessages">
-			<ul>
-				<c:forEach items="${trueMessages}" var="trueMessage">
-					<li><c:out value="${trueMessage}" />
-				</c:forEach>
-			</ul>
-		</div>
-		<c:remove var="trueMessages" scope="session" />
-
 		<div class="header">
 			<c:if test="${ empty loginUser }">
 				<a href="login">ログイン</a>
 			</c:if>
 			<c:if test="${not empty loginUser}">
+				<h1 align="center">BSG掲示板システム</h1>
 				<h2>
 					<c:out value="${loginUser.name}"></c:out>
 					さん、こんにちは。
 				</h2>
+
+						<div class="errorHomeMessages">
+			<ul>
+				<c:forEach items="${errorHomeMessages}" var="errorHomeMessage">
+					<li><c:out value="${errorHomeMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+		<c:remove var="errorHomeMessages" scope="session" />
+		<div class="trueHomeMessages">
+			<ul>
+				<c:forEach items="${trueHomeMessages}" var="trueHomeMessage">
+					<li><c:out value="${trueHomeMessage}" />
+				</c:forEach>
+			</ul>
+		</div>
+		<c:remove var="trueHomeMessages" scope="session" />
+
+
 				<a href="article">新規投稿画面へ</a>
 				<c:if test="${loginUser.position == 2 }">
 					<a href="managment">ユーザー管理画面へ</a>
@@ -73,9 +76,9 @@
 
 			<div class="messages">
 				<c:if test="${not empty loginUser}">
-					<h2>投稿の一覧</h2>
+				<br />
 					<div class="search">
-					<h3 align="center">投稿記事検索</h3>
+					<h3>投稿記事検索</h3>
 					<form action="home" method="get">
 						<label>カテゴリー <select name="categories" id="category"></label>
 						<option value=""  />全件表示
@@ -89,23 +92,26 @@
 						</select> <br /><br />
 						日付(両方選択してください。両日入力がなければカテゴリーのみで検索できます。)<br />
 						<input type="date" name="startDay"  value="${startDay }"  />
-						から <input type="date" name="finishDay" value="${finishDay }" />まで<br />
+						から <input type="date" name="finishDay" value="${finishDay }" />まで
 
-							<input type="submit" value="検索" /><a href="home"><input type="button"
+							<input type="submit" value="検索" /><br /><br />
+							<a href="home"><input type="button"
 							value="検索リセット" /></a>
 					</form>
 					</div>
 <br />
+				<h2 align="center">～投稿の一覧～</h2>
 					<c:forEach items="${articles}" var="article">
 						<div class="articleView">
-							<br /> <span class="name">【投稿者】<c:out
-									value="${article.name}" /></span>
-									【件名】<c:out value="${article.title}" />
-									【カテゴリー】<c:out value="${article.category}" />
-									 <span class="date">【投稿日時】<c:out
-									value="${article.insertDate}" /></span>
-							<form action="deleteArticle" method="post"
-								onSubmit="return articleCheck()">
+							<br />
+							<span class="name">
+								【投稿者】<c:out value="${article.name}" /></span>
+								【件名】<c:out value="${article.title}" />
+								【カテゴリー】<c:out value="${article.category}" />
+							<span class="date">
+								【投稿日時】<fmt:formatDate value="${article.insertDate}"
+								 	pattern="yyyy/MM/dd HH:mm:ss" /></span><br /><br />
+							<form action="deleteArticle" method="post" onSubmit="return articleCheck()">
 								<c:if test="${loginUser.position == 1 }">
 									<input type="submit" value="投稿を削除する" />
 									<input type="hidden" name="id" value="${article.id}" />
@@ -137,20 +143,23 @@
 
 							<div class="text">
 								【本文】
-								<pre class="articleText"><c:out value="${article.text}" /></pre>
+								<div class="articleText">
+								<c:out value="${article.text}"  />
+								</div>
 							</div>
 							<br />
 						<br />
-						<div class="commentView">
+						<div class="line"></div>
 						<c:forEach items="${comments}" var="comment">
 								<c:if test="${article.id == comment.articleId}">
+									<div class="commentView">
 									<br />
-									<span class="name">【投稿者】<c:out
-											value="${comment.userName}" /></span>
-									<span class="date">【投稿日時】<c:out
-											value="${comment.insertDate}" /></span>
-									<form action="deleteComment" method="post"
-										onSubmit="return commentCheck()">
+									<span class="name">
+										【投稿者】<c:out value="${comment.userName}" /></span>
+									<span class="date">
+										【投稿日時】<fmt:formatDate value="${comment.insertDate}"
+											 pattern="yyyy/MM/dd HH:mm:ss" /></span><br /><br />
+									<form action="deleteComment" method="post" onSubmit="return commentCheck()">
 										<c:if test="${loginUser.position == 1 }">
 											<input type="hidden" name="id" value="${comment.id}" />
 											<input type="submit" value="コメントを削除する" />
@@ -176,20 +185,19 @@
 										</c:if>
 									</form>
 									<br />
-
-									<div class="text">
-										【内容】
-										<pre class="commentText"><c:out value="${comment.text}" /></pre>
-									</div>
+									【本文】
+										<div class="commentText" >
+										<c:out value="${comment.text}" />
+										</div>
 									<br />
+									</div>
 								</c:if>
 						</c:forEach>
-						</div>
 						<br />
 						<div class="comment">
 						<form action="comments" method="post">
 							<input type="hidden" name="articleId" value="${article.id }" />
-							<textarea name="text" cols="30" rows="3" class="comment-box"></textarea><br />
+							<textarea name="text" cols="100" rows="5" class="comment-box"></textarea><br />
 							<input type="submit" value="コメントする">(500文字以内)<br /><br />
 						</form>
 						</div>

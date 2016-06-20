@@ -50,7 +50,7 @@ ServletException {
 		new UserService().userState(user);
 
 		messages.add("変更は正常に行われました");
-		session.setAttribute("Messages", messages);
+		session.setAttribute("trueManagmentMessages", messages);
 		response.sendRedirect("managment");
 	}
 }

@@ -41,11 +41,11 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
 
 				new CommentService().register(commnets);
 				messages.add("コメントは正常に行われました");
-				session.setAttribute("trueMessages", messages);
+				session.setAttribute("trueHomeMessages", messages);
 				response.sendRedirect("home");
 			} else {
 				session.setAttribute("articleCommentData", articleCommentData);
-				session.setAttribute("Messages", messages);
+				session.setAttribute("errorHomeMessages", messages);
 				response.sendRedirect("home");
 			}
 	}

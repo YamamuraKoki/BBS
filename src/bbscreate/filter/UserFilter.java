@@ -28,7 +28,7 @@ public class UserFilter implements Filter {
 
 				if(user.getPosition() != 2){
 				HttpSession session = ((HttpServletRequest)request).getSession();
-				session.setAttribute("Messages", "権限がないためにホーム画面に移動します");
+				session.setAttribute("errorHomeMessages", "権限がないためにホーム画面に移動します");
 				((HttpServletResponse)response).sendRedirect("home");
 
 				return;

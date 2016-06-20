@@ -52,7 +52,7 @@ ServletException {
 			request.setAttribute("comments", comments);
 
 		} else {
-			request.setAttribute("Messages", messages);
+			request.setAttribute("errorHomeMessages", messages);
 			request.setAttribute("articles", articles);
 			request.setAttribute("categoryData", categoryData);
 			request.setAttribute("comments", comments);

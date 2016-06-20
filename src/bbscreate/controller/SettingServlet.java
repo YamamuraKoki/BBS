@@ -74,11 +74,11 @@ public class SettingServlet extends HttpServlet {
 
 			session.setAttribute("editUser", editUser);
 			messages.add("編集は正常に行われました");
-			session.setAttribute("Messages", messages);
+			session.setAttribute("trueManagmentMessages", messages);
 			new UserService().update(editUser);
 			response.sendRedirect("managment");
 		} else {
-			session.setAttribute("Messages", messages);
+			session.setAttribute("errorMessages", messages);
 			response.sendRedirect("setting");
 		}
 	}
